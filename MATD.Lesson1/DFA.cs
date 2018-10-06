@@ -18,7 +18,7 @@ namespace MATD.Lesson1
             _transitionFunctions = transitionFunctions.ToDictionary(t => (t.state, t.symbol), t => t.newState);
         }
 
-        public bool IsAccepted(params TSymbol[] input)
+        public bool IsAccepted(IEnumerable<TSymbol> input)
         {
             var currentState = _startState;
 
