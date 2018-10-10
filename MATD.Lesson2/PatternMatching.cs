@@ -1,9 +1,33 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace MATD.Lesson2
 {
     public static class PatternMatching
     {
+        public static IEnumerable<int> AllIndexesOf(this string text, string pattern)
+        {
+            int index = 0;
+            while ((index = text.IndexOf(pattern, index)) != -1)
+                yield return index++;
+        }
+
+        public static IEnumerable<int> AllMatches(this string text, string pattern)
+        {
+            var regex = new Regex(pattern);
+            int index = 0;
+
+            while (true)
+            {
+                var match = regex.Match(text, index);
+                if (!match.Success)
+                    yield break;
+
+                yield return match.Index;
+                index = match.Index + 1;
+            }
+        }
+
         public static IEnumerable<int> Naive(this string text, string pattern)
         {
             for (int i = 0; i < text.Length - pattern.Length + 1; i++)

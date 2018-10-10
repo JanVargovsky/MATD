@@ -12,12 +12,29 @@ namespace MATD.Lesson2.Test
                 Add("aaaa", "aa", 0, 1, 2);
                 Add("adabcdabcab", "abc", 2, 6);
                 Add("abcdabbdb", "bdb", 6);
+                Add(new string('a', 999) + "b", new string('a', 99) + "b", 900);
             }
 
             new void Add(string t, string p, params int[] expected)
             {
                 base.Add(t, p, expected);
             }
+        }
+
+        [Theory]
+        [ClassData(typeof(PatternMatchingTestData))]
+        public void AllIndexesOfTest(string t, string p, params int[] expected)
+        {
+            var actual = PatternMatching.AllIndexesOf(t, p);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [ClassData(typeof(PatternMatchingTestData))]
+        public void AllMatchesTest(string t, string p, params int[] expected)
+        {
+            var actual = PatternMatching.AllMatches(t, p);
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
