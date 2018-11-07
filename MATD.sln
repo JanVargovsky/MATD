@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MATD.Lesson3", "MATD.Lesson
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MATD.Lesson3.Test", "MATD.Lesson3.Test\MATD.Lesson3.Test.csproj", "{58D1F5B7-DBE1-40E5-AA11-85361A8D69B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MATD.Lesson4", "MATD.Lesson4\MATD.Lesson4.csproj", "{53B17344-DAAB-4DAB-9008-9C192F5B313E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MATD.Lesson4", "MATD.Lesson4\MATD.Lesson4.csproj", "{53B17344-DAAB-4DAB-9008-9C192F5B313E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MATD.Lesson4.Test", "MATD.Lesson4.Test\MATD.Lesson4.Test.csproj", "{C1717FD3-B4DB-42D9-9817-D718845E186A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MATD.Lesson4.Test", "MATD.Lesson4.Test\MATD.Lesson4.Test.csproj", "{C1717FD3-B4DB-42D9-9817-D718845E186A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MATD.Lesson5", "MATD.Lesson5\MATD.Lesson5.csproj", "{E473FAC0-906C-4DC8-A8F1-62E080B3CB8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{C1717FD3-B4DB-42D9-9817-D718845E186A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1717FD3-B4DB-42D9-9817-D718845E186A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1717FD3-B4DB-42D9-9817-D718845E186A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E473FAC0-906C-4DC8-A8F1-62E080B3CB8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E473FAC0-906C-4DC8-A8F1-62E080B3CB8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E473FAC0-906C-4DC8-A8F1-62E080B3CB8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E473FAC0-906C-4DC8-A8F1-62E080B3CB8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
