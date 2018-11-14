@@ -30,14 +30,35 @@ namespace MATD.Lesson5
             {
                 documents.AddRange(await loader.ParseAsync(file));
             }
-
-            var textPreprocessing = new TextPreprocessing(new StopList(), new Stemmer());
+            var stemmer = new Stemmer();
+            var textPreprocessing = new TextPreprocessing(new StopList(), stemmer);
             textPreprocessing.RemoveInvalidCharacters(documents);
             textPreprocessing.SplitToTokens(documents);
             textPreprocessing.ApplyStopList(documents);
             textPreprocessing.ApplyStemming(documents);
-
             Console.WriteLine(sw.Elapsed);
+
+            var invertedIndex = new InvertedIndex(documents);
+            var querySystem = new QuerySystem(invertedIndex, stemmer);
+
+
+            Console.Write("Enter query:");
+            string input;
+            while ((input = Console.ReadLine()) != "")
+            {
+                var words = input.ToUpperInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                var result = querySystem.Query(words);
+                foreach (var doc in result)
+                {
+                    Console.WriteLine($"{doc.RawData.Substring(0, 50)}...");
+                }
+
+                Console.ForegroundColor = result.Count != 0 ? ConsoleColor.Green : ConsoleColor.Red;
+                Console.WriteLine($"{result.Count} results");
+                Console.ResetColor();
+
+                Console.Write("Enter query:");
+            }
         }
     }
 }
