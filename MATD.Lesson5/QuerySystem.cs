@@ -5,10 +5,10 @@ namespace MATD.Lesson5
 {
     public class QuerySystem
     {
-        readonly InvertedIndex _invertedIndex;
+        readonly IInvertedIndex _invertedIndex;
         readonly Stemmer _stemmer;
 
-        public QuerySystem(InvertedIndex invertedIndex, Stemmer stemmer)
+        public QuerySystem(IInvertedIndex invertedIndex, Stemmer stemmer)
         {
             _invertedIndex = invertedIndex;
             _stemmer = stemmer;

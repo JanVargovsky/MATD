@@ -38,7 +38,8 @@ namespace MATD.Lesson5
             textPreprocessing.ApplyStemming(documents);
             Console.WriteLine(sw.Elapsed);
 
-            var invertedIndex = new InvertedIndex(documents);
+            //var invertedIndex = new InvertedIndex(documents);
+            var invertedIndex = new InvertedIndexOnDisc(documents);
             var querySystem = new QuerySystem(invertedIndex, stemmer);
 
 
@@ -47,14 +48,16 @@ namespace MATD.Lesson5
             while ((input = Console.ReadLine()) != "")
             {
                 var words = input.ToUpperInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                sw = Stopwatch.StartNew();
                 var result = querySystem.Query(words);
+                sw.Stop();
                 foreach (var doc in result)
                 {
-                    Console.WriteLine($"{doc.RawData.Substring(0, 50)}...");
+                    Console.WriteLine($"ID={doc.Id}, {doc.RawData?.Substring(0, 50)}...");
                 }
 
                 Console.ForegroundColor = result.Count != 0 ? ConsoleColor.Green : ConsoleColor.Red;
-                Console.WriteLine($"{result.Count} results");
+                Console.WriteLine($"{result.Count} results ({sw.ElapsedMilliseconds}ms)");
                 Console.ResetColor();
 
                 Console.Write("Enter query:");

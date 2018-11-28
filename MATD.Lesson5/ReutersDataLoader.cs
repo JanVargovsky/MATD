@@ -11,6 +11,8 @@ namespace MATD.Lesson5
         static readonly Regex TitleRegex;
         static readonly Regex BodyRegex;
 
+        int _id;
+
         static ReutersDataLoader()
         {
             var options = RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase;
@@ -38,7 +40,8 @@ namespace MATD.Lesson5
                 var body = bodyMatch.Groups[1].Value;
                 yield return new Document
                 {
-                    RawData = $"{title} {body}"
+                    RawData = $"{title} {body}",
+                    Id = _id++,
                 };
             }
 

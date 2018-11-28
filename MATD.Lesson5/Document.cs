@@ -2,6 +2,8 @@
 {
     public class Document
     {
+        public int Id { get; set; }
+
         public string RawData { get; set; }
 
         public string Data { get; set; }

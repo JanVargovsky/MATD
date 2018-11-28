@@ -2,7 +2,7 @@
 
 namespace MATD.Lesson5
 {
-    public class InvertedIndex
+    public class InvertedIndex : IInvertedIndex
     {
         // <term, docs>
         readonly Dictionary<string, HashSet<Document>> _values;
