@@ -15,6 +15,7 @@ namespace MATD.Lesson8
             _stems = GetStems(documents);
             _documents = Build(documents);
             ComputeInverseDocumentFrequency();
+            Normalize();
         }
 
         string[] GetStems(IEnumerable<Document> documents) => documents
@@ -78,7 +79,17 @@ namespace MATD.Lesson8
             }
         }
 
+        void Normalize()
+        {
+            foreach (var document in _documents)
+            {
+                VectorModelMath.Normalize(document.Values, true);
+            }
+        }
+
         public IEnumerable<VectorDocument> GetDocuments() => _documents;
+
+        public VectorDocument GetDocument(int i) => _documents[i];
 
         public int GetIndexOfStem(string stem) => Array.BinarySearch(_stems, stem);
 

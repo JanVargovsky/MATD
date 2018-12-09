@@ -15,19 +15,13 @@ namespace MATD.Lesson8
             _stemmer = stemmer;
         }
 
-        double Score(int[] q, double[] d)
-        {
-            double value = 0;
-            for (int i = 0; i < q.Length; i++)
-                value += q[i] * d[i];
-            return value;
-        }
+        double Score(double[] q, double[] d) => VectorModelMath.DotProduct(q, d);
 
         public IEnumerable<QueryResult> Query(string[] words)
         {
             var stems = words.Select(_stemmer.WordToStem);
 
-            var freeQuery = new int[_documentCollection.LengthOfVector];
+            var freeQuery = new double[_documentCollection.LengthOfVector];
             foreach (var stem in stems)
             {
                 var index = _documentCollection.GetIndexOfStem(stem);
@@ -36,6 +30,25 @@ namespace MATD.Lesson8
 
                 freeQuery[index] = 1;
             }
+            VectorModelMath.Normalize(freeQuery, true);
+
+            var scores = _documentCollection
+                .GetDocuments()
+                .Select(doc => new QueryResult
+                {
+                    Document = doc,
+                    Score = Score(freeQuery, doc.Values),
+                })
+                .OrderByDescending(t => t.Score)
+                .ToArray();
+
+            return scores;
+        }
+
+        public IEnumerable<QueryResult> QuerySimilarDocuments(int index)
+        {
+            var document = _documentCollection.GetDocument(index);
+            var freeQuery = document.Values;
 
             var scores = _documentCollection
                 .GetDocuments()

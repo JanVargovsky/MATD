@@ -31,24 +31,56 @@ namespace MATD.Lesson8
             var vectorDocuments = new VectorDocumentCollection(documents);
             var querySystem = new VectorQuerySystem(vectorDocuments, new Stemmer());
 
-            Console.Write("Enter query:");
-            string input;
-            while ((input = Console.ReadLine()) != "")
+            Console.WriteLine("Enter mode (q = query mode | s = similar documents:");
+            string mode = Console.ReadLine();
+            if (mode == "q")
             {
-                var words = input.ToUpperInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                sw = Stopwatch.StartNew();
-                var queryResults = querySystem.Query(words);
-                sw.Stop();
-                foreach (var queryResult in queryResults.Take(10))
-                {
-                    Console.WriteLine($"ID={queryResult.Document.Id}, Score={queryResult.Score}");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Results found in {sw.ElapsedMilliseconds}ms");
-                Console.ResetColor();
-
                 Console.Write("Enter query:");
+                string input;
+                while ((input = Console.ReadLine()) != "")
+                {
+                    var words = input.ToUpperInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    sw = Stopwatch.StartNew();
+                    var queryResults = querySystem.Query(words);
+                    sw.Stop();
+                    foreach (var queryResult in queryResults.Take(10))
+                    {
+                        Console.WriteLine($"ID={queryResult.Document.Id}, Score={queryResult.Score}");
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Results found in {sw.ElapsedMilliseconds}ms");
+                    Console.ResetColor();
+
+                    Console.Write("Enter query:");
+                }
+            }
+            else if(mode == "s")
+            {
+                Console.Write("Enter document id:");
+                string input;
+                while ((input = Console.ReadLine()) != "")
+                {
+                    if (!int.TryParse(input, out var id))
+                    {
+                        Console.WriteLine("Invalid document id");
+                        continue;
+                    }
+
+                    sw = Stopwatch.StartNew();
+                    var queryResults = querySystem.QuerySimilarDocuments(id);
+                    sw.Stop();
+                    foreach (var queryResult in queryResults.Take(10))
+                    {
+                        Console.WriteLine($"ID={queryResult.Document.Id}, Score={queryResult.Score}");
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Results found in {sw.ElapsedMilliseconds}ms");
+                    Console.ResetColor();
+
+                    Console.Write("Enter document id:");
+                }
             }
         }
     }
