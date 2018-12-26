@@ -62,11 +62,39 @@ namespace MATD.Lesson8
 
             return scores;
         }
+
+        public IEnumerable<QueryScoreResult> QueryScoreDocuments(int[] ids)
+        {
+            var result = new List<QueryScoreResult>();
+            for (int i = 0; i < ids.Length; i++)
+            {
+                for (int j = i + 1; j < ids.Length; j++)
+                {
+                    var document1 = _documentCollection.GetDocument(ids[i]);
+                    var document2 = _documentCollection.GetDocument(ids[j]);
+                    var score = Score(document1.Values, document2.Values);
+                    result.Add(new QueryScoreResult
+                    {
+                        Document1 = document1,
+                        Document2 = document2,
+                        Score = score,
+                    });
+                }
+            }
+            return result.OrderByDescending(t => t.Score);
+        }
     }
 
     public class QueryResult
     {
         public VectorDocument Document { get; set; }
+        public double Score { get; set; }
+    }
+
+    public class QueryScoreResult
+    {
+        public VectorDocument Document1 { get; set; }
+        public VectorDocument Document2 { get; set; }
         public double Score { get; set; }
     }
 }

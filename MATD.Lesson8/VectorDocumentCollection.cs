@@ -1,28 +1,30 @@
 ﻿using MATD.Lesson5;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace MATD.Lesson8
 {
     public class VectorDocumentCollection
     {
+        public ImmutableArray<string> Stems { get; }
+
         readonly List<VectorDocument> _documents;
-        readonly string[] _stems;
 
         public VectorDocumentCollection(IEnumerable<Document> documents)
         {
-            _stems = GetStems(documents);
+            Stems = GetStems(documents);
             _documents = Build(documents);
             ComputeInverseDocumentFrequency();
             Normalize();
         }
 
-        string[] GetStems(IEnumerable<Document> documents) => documents
+        ImmutableArray<string> GetStems(IEnumerable<Document> documents) => documents
                 .SelectMany(t => t.Stems)
                 .Distinct()
                 .OrderBy(t => t)
-                .ToArray();
+                .ToImmutableArray();
 
         List<VectorDocument> Build(IEnumerable<Document> documents)
         {
@@ -33,7 +35,7 @@ namespace MATD.Lesson8
                 var vectorDocument = new VectorDocument
                 {
                     Id = document.Id,
-                    Values = new double[_stems.Length],
+                    Values = new double[Stems.Length],
                 };
 
                 foreach (var stem in document.Stems)
@@ -91,7 +93,7 @@ namespace MATD.Lesson8
 
         public VectorDocument GetDocument(int i) => _documents[i];
 
-        public int GetIndexOfStem(string stem) => Array.BinarySearch(_stems, stem);
+        public int GetIndexOfStem(string stem) => ImmutableArray.BinarySearch(Stems, stem);
 
         public int LengthOfVector => _documents[0].Values.Length;
     }

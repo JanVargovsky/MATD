@@ -26,12 +26,12 @@ namespace MATD.Lesson8
             textPreprocessing.SplitToTokens(documents);
             textPreprocessing.ApplyStopList(documents);
             textPreprocessing.ApplyStemming(documents);
-            Console.WriteLine(sw.Elapsed);
+            Console.WriteLine($"Load took {sw.Elapsed}");
 
             var vectorDocuments = new VectorDocumentCollection(documents);
             var querySystem = new VectorQuerySystem(vectorDocuments, new Stemmer());
 
-            Console.WriteLine("Enter mode (q = query mode | s = similar documents:");
+            Console.WriteLine("Enter mode (q = query mode | s = similar documents | c = documents comparison):");
             string mode = Console.ReadLine();
             if (mode == "q")
             {
@@ -55,7 +55,7 @@ namespace MATD.Lesson8
                     Console.Write("Enter query:");
                 }
             }
-            else if(mode == "s")
+            else if (mode == "s")
             {
                 Console.Write("Enter document id:");
                 string input;
@@ -80,6 +80,45 @@ namespace MATD.Lesson8
                     Console.ResetColor();
 
                     Console.Write("Enter document id:");
+                }
+            }
+            else if (mode == "c")
+            {
+                Console.Write("Enter at least two document ids:");
+                string input;
+                while ((input = Console.ReadLine()) != "")
+                {
+                    string[] rawIds = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    if (rawIds.Length < 2)
+                    {
+                        Console.WriteLine("Invalid document ids");
+                        continue;
+                    }
+
+                    var ids = new int[rawIds.Length];
+                    for (int i = 0; i < rawIds.Length; i++)
+                    {
+                        if (!int.TryParse(rawIds[i], out var id))
+                        {
+                            Console.WriteLine($"'{rawIds[i]}' is invalid document id");
+                            continue;
+                        }
+                        ids[i] = id;
+                    }
+
+                    sw = Stopwatch.StartNew();
+                    var queryResults = querySystem.QueryScoreDocuments(ids);
+                    sw.Stop();
+                    foreach (var queryResult in queryResults.Take(10))
+                    {
+                        Console.WriteLine($"D({queryResult.Document1.Id}, {queryResult.Document2.Id})={queryResult.Score}");
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Calculated in {sw.ElapsedMilliseconds}ms");
+                    Console.ResetColor();
+
+                    Console.Write("Enter at least two document ids:");
                 }
             }
         }
